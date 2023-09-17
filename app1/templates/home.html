@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1 class="text-center">All News:-</h1>
+    <h1 class="text-center">Welcome {{request.user.username}}</h1>
+    <hr>
+    <button class="btn btn-success" value="refresh" onclick="location.reload();">Refresh</button>
+    <button class="btn " value="LogOut"><a href="{% url 'logout' %}">LogOut</a></button><br>
+
+    
+{% if query %} 
+<a href="{% url 'filter_results' %}">Filering rusults for:- {{query}}</a>
+{% endif %}
+
+    <h3>Search Contries</h3>
+    
+    <form action="" method="get">
+        <input type="text" name="country">
+        <button type='submit' value="search">search</button>
+    </form>
+
+    <h3>Search Categories</h3>
+    
+    <form action="" method="get">
+        <input type="text" name="category">
+        <button type='submit' value="search">search</button>
+    </form>
+
+    <h3>Search News Title</h3>
+    <form action="" method="get">
+        <input type="text" placeholder="type any phase/key to search news-title" name="q">
+        <button type="submit" value="search">search</button>
+    </form>
+
+    {% if result_count %}
+    <h3>search results:- {{result_count}}</h3>
+    {% endif %}
+
+{% if user_keywords %}
+    {% for i in user_keywords %}
+        {{i}}
+    {% endfor %}
+{% endif %}
+  
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- showing results in card view -->
+                {% for artical in all_articals %}
+
+                <div class="card rounded shadow-lg m-2" style="width: 26rem;">
+                    <img src="{{ artical.urlToImage }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ artical.title }}</h5>
+                      <h5 class="card-title">author: {{ artical.author }}</h5>
+                      <h5 class="card-title">source: {{ artical.source.name }}</h5>
+                      <p class="card-text">{{ artical.description }}</p>
+                      <p class="card-text">{{  artical.content }}</p>
+                      <hr>
+                      <h6 class="card-title">Published at:  {{ artical.publishedAt }}</h6><br>
+                      <a href="{{ artical.url }}" class="btn btn-success m-1" target="_blank">View Complete News</a><br>
+                    </div>
+                </div>
+            
+                {% endfor %}
+
+            </div>
+
+            <div class="col-md-4">
+                <!-- showing categories -->
+                categories:- 
+                <ul clas="list-group">
+                    <li class="list-group-item"><a class="btn btn-success" href="{% url 'home' %}?category=health">Health</a></li>
+                    <li class="list-group-item"><a class="btn btn-success" href="{% url 'home' %}?category=business">business</a></li>
+                    <li class="list-group-item"><a class="btn btn-success" href="{% url 'home' %}?category=general">general</a></li>
+                    <li class="list-group-item"><a class="btn btn-success" href="{% url 'home' %}?category=entertainment">entertainment</a></li>
+                    <li class="list-group-item"><a class="btn btn-success" href="{% url 'home' %}?category=sports">sports</a></li>
+                    <li class="list-group-item"><a class="btn btn-success" href="{% url 'home' %}?category=technology">technology</a></li>
+
+
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+     
